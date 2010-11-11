@@ -12,6 +12,7 @@ import org.sonatype.sitemap.record.Record;
 import org.sonatype.sitemap.record.StringKey;
 import org.sonatype.sitemap.space4j.Space4jBackend;
 import org.space4j.Space4J;
+import org.space4j.implementation.SimpleLogger;
 import org.space4j.implementation.SimpleSpace4J;
 
 public class ManagerTest
@@ -25,6 +26,8 @@ public class ManagerTest
         throws Exception
     {
         super.setUp();
+
+        SimpleLogger.setDir( "target/space4j_db" );
 
         space4j = new SimpleSpace4J( "Sitemap", 1000L );
 
@@ -68,8 +71,8 @@ public class ManagerTest
             map.put( path, new FileContent( new File( "pom.xml" ) ) );
         }
 
-        dumpRecord( map.get( new Path( "/some/path" ) ));
-        dumpRecord( map.get( new Path( "/some/other/path" ) ));
+        dumpRecord( map.get( new Path( "/some/path" ) ) );
+        dumpRecord( map.get( new Path( "/some/other/path" ) ) );
     }
 
 }
