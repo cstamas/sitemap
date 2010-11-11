@@ -3,5 +3,10 @@ Sitemap
 
 In flux still...
 
+TODOs:
+* finish the "partition" support
+* incremental update support
+* separate space4j use into new module
+
 Have fun,  
 ~t~
