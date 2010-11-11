@@ -1,0 +1,15 @@
+// Sitemap Record
+
+package sitemap;
+
+option java_package = "org.sonatype.sitemap.protos";
+option java_outer_classname = "RecordProtos";
+
+// CoreRecord
+message Record {
+  required string path = 1; // path of this content
+  required int64 lastModified = 2; // UTC timestamp when this content was last modified
+  optional int64 contentLength = 3; // item length in bytes
+  optional string contentSha1Hash = 4; // hash of this item
+  optional string contentMimeType = 5; // mime type of content
+}

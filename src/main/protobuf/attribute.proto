@@ -1,0 +1,19 @@
+// Sitemap Record
+
+package sitemap;
+
+option java_package = "org.sonatype.sitemap.protos";
+option java_outer_classname = "AttributeProtos";
+
+// CoreRecord
+message Attribute {
+
+  message Statement {
+    required string predicate = 1;
+    optional string value = 2;
+  }
+
+  required string path = 1; // path of this content
+
+  repeated Statement statement = 5; // statements
+}
