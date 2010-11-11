@@ -26,14 +26,14 @@ import org.space4j.Space;
 import org.space4j.indexing.IndexManager;
 
 @SuppressWarnings( "serial" )
-public class PutAllCmd
+public class PutAllCmd<K extends Object, V extends Object>
     extends Command
 {
     private final Object target;
 
-    private final Map<Object, Object> all;
+    private final Map<K, V> all;
 
-    public PutAllCmd( Object target, Map<Object, Object> all )
+    public PutAllCmd( Object target, Map<K, V> all )
     {
         this.target = target;
 
@@ -68,7 +68,7 @@ public class PutAllCmd
 
             int result = 0;
 
-            for ( Map.Entry<Object, Object> e : all.entrySet() )
+            for ( Map.Entry<K, V> e : all.entrySet() )
             {
                 Object key = e.getKey();
 

@@ -1,8 +1,6 @@
 package org.sonatype.sitemap.space4j;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.sonatype.sitemap.Backend;
@@ -78,21 +76,14 @@ public class Space4jBackend
 
     // ==
 
-    public boolean put( final Key sid, final Keyed cr )
+    public boolean put( Key sid, Key key, Object keyed )
     {
-        return exec( new PutCmd( sid, cr.getKey(), cr ), 1 );
+        return exec( new PutCmd( sid, key, keyed ), 1 );
     }
 
-    public <T extends Keyed> int putAll( Key sid, Collection<T> records )
+    public <T extends Key, V extends Object> int putAll( Key sid, Map<T, V> records )
     {
-        Map<Object, Object> toPut = new HashMap<Object, Object>( records.size() );
-
-        for ( Keyed r : records )
-        {
-            toPut.put( r.getKey(), r );
-        }
-
-        return exec( new PutAllCmd( sid, toPut ) );
+        return exec( new PutAllCmd<T, V>( sid, records ) );
     }
 
     public boolean remove( final Key sid, final Key key )
@@ -102,11 +93,7 @@ public class Space4jBackend
 
     public <T extends Key> int removeAll( final Key sid, final Collection<T> keys )
     {
-        ArrayList<Object> toRemove = new ArrayList<Object>( keys.size() );
-
-        toRemove.addAll( keys );
-
-        return exec( new RemoveAllCmd( sid, toRemove ) );
+        return exec( new RemoveAllCmd<T>( sid, keys ) );
     }
 
     // ==

@@ -17,6 +17,8 @@ import org.space4j.implementation.SimpleSpace4J;
 public class ManagerTest
     extends TestCase
 {
+    protected Space4J space4j;
+
     protected Manager manager;
 
     protected void setUp()
@@ -24,13 +26,28 @@ public class ManagerTest
     {
         super.setUp();
 
-        Space4J space4j = new SimpleSpace4J( "Sitemap", 1000L );
+        space4j = new SimpleSpace4J( "Sitemap", 1000L );
 
         space4j.executeSnapshot();
 
         this.manager = new DefaultManager( new Space4jBackend( space4j ) );
 
         this.manager.registerContributor( new DummyContributor() );
+    }
+
+    protected void tearDown()
+        throws Exception
+    {
+        super.tearDown();
+
+        space4j.executeSnapshot();
+    }
+
+    protected void dumpRecord( Record cr )
+    {
+        System.out.println( cr.toString() );
+
+        System.out.println( cr.getAttributes().toString() );
     }
 
     public void testSimple()
@@ -41,7 +58,9 @@ public class ManagerTest
 
         Sitemap map = manager.getSitemap( alpha );
 
-        // map.put( new Path( "/some/path" ), new FileContent( new File( "pom.xml" ) ) );
+        map.put( new Path( "/some/path" ), new FileContent( new File( "pom.xml" ) ) );
+
+        map.put( new Path( "/some/other/path" ), new FileContent( new File( "pom.xml" ) ) );
 
         for ( int i = 0; i < 10; i++ )
         {
@@ -49,11 +68,8 @@ public class ManagerTest
             map.put( path, new FileContent( new File( "pom.xml" ) ) );
         }
 
-        Record cr = map.get( new Path( "/some/path" ) );
-        
-        System.out.println( cr.toString() );
-        
-        System.out.println( cr.getAttributes().toString() );
+        dumpRecord( map.get( new Path( "/some/path" ) ));
+        dumpRecord( map.get( new Path( "/some/other/path" ) ));
     }
 
 }

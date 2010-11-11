@@ -1,7 +1,6 @@
 package org.sonatype.sitemap;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,10 +12,12 @@ import org.sonatype.sitemap.io.MimeTyped;
 import org.sonatype.sitemap.io.MimeUtils;
 import org.sonatype.sitemap.io.Sha1Hashed;
 import org.sonatype.sitemap.record.Attribute;
+import org.sonatype.sitemap.record.CombinationalKey;
 import org.sonatype.sitemap.record.DefaultRecord;
 import org.sonatype.sitemap.record.Key;
 import org.sonatype.sitemap.record.Path;
 import org.sonatype.sitemap.record.Record;
+import org.sonatype.sitemap.record.Uri;
 
 public class DefaultSitemap
     implements Sitemap
@@ -57,8 +58,10 @@ public class DefaultSitemap
 
         for ( Contributor c : contributors.values() )
         {
-            backend.getMap( c.getKey() ).get( key );
+            // TODO!
+            backend.getMap( getPartitionKey( c ) ).get( key );
         }
+
         return cr;
     }
 
@@ -68,22 +71,34 @@ public class DefaultSitemap
 
         for ( Contributor c : contributors.values() )
         {
-            backend.putAll( c.getKey(), rc.getAttributes( c ) );
+            Collection<Attribute> as = rc.getAttributes( c );
+
+            Map<Uri, Attribute> map = new HashMap<Uri, Attribute>();
+
+            for ( Attribute a : as )
+            {
+                map.put( a.getUri(), a );
+            }
+
+            backend.putAll( getPartitionKey( c ), map );
         }
-        
-        return backend.put( getKey(), rc );
+
+        return backend.put( getKey(), rc.getKey(), rc );
     }
 
     public int putAll( Map<Path, Content> contents )
     {
-        ArrayList<Record> records = new ArrayList<Record>( contents.size() );
+        int result = 0;
 
         for ( Map.Entry<Path, Content> e : contents.entrySet() )
         {
-            records.add( createCoreRecord( e.getKey(), e.getValue() ) );
+            if ( put( e.getKey(), e.getValue() ) )
+            {
+                result++;
+            }
         }
 
-        return backend.putAll( getKey(), records );
+        return result;
     }
 
     public boolean remove( Path key )
@@ -108,6 +123,11 @@ public class DefaultSitemap
     }
 
     // ==
+
+    protected Key getPartitionKey( Contributor c )
+    {
+        return new CombinationalKey( getKey(), c.getKey() );
+    }
 
     protected Record createCoreRecord( final Path path, final Content content )
     {

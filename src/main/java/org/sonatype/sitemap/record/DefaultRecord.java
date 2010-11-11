@@ -1,8 +1,8 @@
 package org.sonatype.sitemap.record;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.sonatype.sitemap.Contributor;
@@ -72,22 +72,42 @@ public class DefaultRecord
 
     public Attribute getAttribute( Uri uri )
     {
-        return getAttributes().get( uri );
-    }
-
-    public Collection<Attribute> getAttributes()
-    {
-        HashMap<Uri, Attribute> result = new HashMap<Uri, Attribute>( attributes.size() );
-
         for ( Collection<Attribute> as : attributes.values() )
         {
             for ( Attribute a : as )
             {
-                result.put( a.getUri(), a );
+                if ( uri.equals( a.getUri() ) )
+                {
+                    return a;
+                }
             }
         }
 
-        return Collections.unmodifiableCollection( attributes.values() );
+        return null;
+    }
+
+    public Collection<Attribute> getAttributes( Contributor c )
+    {
+        ArrayList<Attribute> result = new ArrayList<Attribute>();
+
+        if ( attributes.containsKey( c ) )
+        {
+            result.addAll( attributes.get( c ) );
+        }
+
+        return Collections.unmodifiableCollection( result );
+    }
+
+    public Collection<Attribute> getAttributes()
+    {
+        ArrayList<Attribute> result = new ArrayList<Attribute>();
+
+        for ( Collection<Attribute> as : attributes.values() )
+        {
+            result.addAll( as );
+        }
+
+        return Collections.unmodifiableCollection( result );
     }
 
     // ==

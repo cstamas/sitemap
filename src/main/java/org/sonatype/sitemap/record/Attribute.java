@@ -1,38 +1,11 @@
 package org.sonatype.sitemap.record;
 
-public class Attribute
-    implements Keyed
+import java.io.Serializable;
+
+public interface Attribute
+    extends Keyed, Serializable
 {
-    private final Uri uri;
+    public Uri getUri();
 
-    private final String value;
-
-    public Attribute( Uri uri, String value )
-    {
-        this.uri = uri;
-
-        this.value = value;
-    }
-
-    public Key getKey()
-    {
-        return getUri();
-    }
-
-    public Uri getUri()
-    {
-        return uri;
-    }
-
-    public String getValue()
-    {
-        return value;
-    }
-    
-    // ==
-    
-    public String toString()
-    {
-        return getUri() + " = " + getValue();
-    }
+    public String getValue();
 }

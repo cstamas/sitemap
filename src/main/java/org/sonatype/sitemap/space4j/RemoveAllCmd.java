@@ -27,14 +27,14 @@ import org.space4j.Space;
 import org.space4j.indexing.IndexManager;
 
 @SuppressWarnings( "serial" )
-public class RemoveAllCmd
+public class RemoveAllCmd<V extends Object>
     extends Command
 {
     private final Object target;
 
-    private final Collection<Object> keys;
+    private final Collection<V> keys;
 
-    public RemoveAllCmd( Object target, Collection<Object> keys )
+    public RemoveAllCmd( Object target, Collection<V> keys )
     {
         this.target = target;
 
@@ -69,7 +69,7 @@ public class RemoveAllCmd
 
             int result = 0;
 
-            for ( Object key : keys )
+            for ( V key : keys )
             {
                 Object prev = m.remove( key );
 

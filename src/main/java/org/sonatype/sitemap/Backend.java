@@ -68,7 +68,7 @@ public interface Backend
     boolean put( Key sid, Key key, Object keyed );
 
     // put all into sit map under record.getKey()
-    <T extends Key> int putAll( Key sid, Map<T, Object> records );
+    <T extends Key, V extends Object> int putAll( Key sid, Map<T, V> records );
 
     // remove from sid map the key
     boolean remove( Key sid, Key key );
