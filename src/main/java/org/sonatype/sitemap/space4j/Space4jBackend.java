@@ -18,8 +18,6 @@ import org.space4j.command.RemoveObjectCmd;
 public class Space4jBackend
     implements Backend
 {
-    private static final String RECORD_SEQ_NAME = "record_seq";
-
     private final Space4J space4j;
 
     private final Space space;
@@ -32,16 +30,16 @@ public class Space4jBackend
         space4j.start();
 
         space = space4j.getSpace();
-
-        if ( !space.check( RECORD_SEQ_NAME ) )
-        {
-            space4j.exec( new CreateLongSequenceCmd( RECORD_SEQ_NAME ) );
-        }
     }
 
     public long getNextId( final Key key )
     {
-        IncrementLongSeqCmd cmd = new IncrementLongSeqCmd( RECORD_SEQ_NAME );
+        if ( !space.check( key ) )
+        {
+            exec( new CreateLongSequenceCmd( key ), 1 );
+        }
+
+        IncrementLongSeqCmd cmd = new IncrementLongSeqCmd( key );
 
         exec( cmd, -1 );
 
