@@ -4,7 +4,7 @@ import java.io.File;
 
 import junit.framework.TestCase;
 
-import org.sonatype.sitemap.attributes.DummyContributor;
+import org.sonatype.sitemap.core.DefaultManager;
 import org.sonatype.sitemap.io.FileContent;
 import org.sonatype.sitemap.record.Key;
 import org.sonatype.sitemap.record.Path;
@@ -35,7 +35,7 @@ public class ManagerTest
 
         this.manager = new DefaultManager( new Space4jBackend( space4j ) );
 
-        this.manager.registerContributor( new DummyContributor() );
+        this.manager.registerContributor( new EvenFlaggingContributor() );
     }
 
     protected void tearDown()
@@ -65,7 +65,7 @@ public class ManagerTest
 
         map.put( new Path( "/some/other/path" ), new FileContent( new File( "pom.xml" ) ) );
 
-        for ( int i = 0; i < 10; i++ )
+        for ( int i = 0; i < 100; i++ )
         {
             Path path = new Path( "/some/path/" + i );
             map.put( path, new FileContent( new File( "pom.xml" ) ) );

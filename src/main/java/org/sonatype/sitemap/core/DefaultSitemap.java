@@ -1,4 +1,4 @@
-package org.sonatype.sitemap;
+package org.sonatype.sitemap.core;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.sonatype.sitemap.Backend;
+import org.sonatype.sitemap.Contributor;
+import org.sonatype.sitemap.Sitemap;
 import org.sonatype.sitemap.io.Content;
 import org.sonatype.sitemap.io.DigesterUtils;
 import org.sonatype.sitemap.io.MimeTyped;

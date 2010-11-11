@@ -1,4 +1,4 @@
-package org.sonatype.sitemap.attributes;
+package org.sonatype.sitemap;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,12 +13,18 @@ import org.sonatype.sitemap.record.Record;
 import org.sonatype.sitemap.record.StringKey;
 import org.sonatype.sitemap.record.Uri;
 
-public class DummyContributor
+/**
+ * A simple contributor "flagging" every incoming record as "even" or "non-even" (odd), depending on which incoming call
+ * was it requested to create attributes for. Just for demo and testing and debugging, and ultimately for fun.
+ * 
+ * @author cstamas
+ */
+public class EvenFlaggingContributor
     implements Contributor
 {
-    private final StringKey namespace = new StringKey( "urn:dummy#" );
+    private final StringKey namespace = new StringKey( "urn:evenFlaggingContributor#" );
 
-    private final StringKey dummyAttribute = new StringKey( "dummyAttribute" );
+    private final StringKey dummyAttribute = new StringKey( "isEven" );
 
     private AtomicInteger ai = new AtomicInteger();
 
@@ -31,18 +37,10 @@ public class DummyContributor
     {
         int now = ai.getAndIncrement();
 
-        if ( now % 2 == 0 )
-        {
-            ArrayList<Attribute> result = new ArrayList<Attribute>();
+        ArrayList<Attribute> result = new ArrayList<Attribute>();
 
-            result.add( new DefaultAttribute( new Uri( getKey(), dummyAttribute ),
-                String.valueOf( System.currentTimeMillis() ) ) );
+        result.add( new DefaultAttribute( new Uri( getKey(), dummyAttribute ), String.valueOf( now % 2 == 0 ) ) );
 
-            return result;
-        }
-        else
-        {
-            return null;
-        }
+        return result;
     }
 }

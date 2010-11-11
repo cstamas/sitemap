@@ -8,6 +8,12 @@ import org.sonatype.sitemap.record.Keyed;
 import org.sonatype.sitemap.record.Path;
 import org.sonatype.sitemap.record.Record;
 
+/**
+ * A "contributor" that is able to decorate the Sitemap core Record with attributes. Every contributor automatically
+ * goes into separate "partition" (storage map), and it's up to client to decide would it use it or not.
+ * 
+ * @author cstamas
+ */
 public interface Contributor
     extends Keyed
 {

@@ -1,8 +1,12 @@
-package org.sonatype.sitemap;
+package org.sonatype.sitemap.core;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.sonatype.sitemap.Backend;
+import org.sonatype.sitemap.Contributor;
+import org.sonatype.sitemap.Manager;
+import org.sonatype.sitemap.Sitemap;
 import org.sonatype.sitemap.record.CombinationalKey;
 import org.sonatype.sitemap.record.Key;
 

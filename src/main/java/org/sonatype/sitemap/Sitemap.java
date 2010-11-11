@@ -8,6 +8,11 @@ import org.sonatype.sitemap.record.Keyed;
 import org.sonatype.sitemap.record.Path;
 import org.sonatype.sitemap.record.Record;
 
+/**
+ * The sitemap, that is a "map-like" registry of Records.
+ * 
+ * @author cstamas
+ */
 public interface Sitemap
     extends Keyed
 {
