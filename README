@@ -4,7 +4,9 @@ Sitemap
 In flux still...
 
 TODOs:
-* finish the "partition" support
+* finish the "partition" support - DONE
+* add protobuf Logger instead the default one (time stability)
+* add DirectBuffer support instead direct FS/inMemory use
 * incremental update support
 * separate space4j use into new module
 

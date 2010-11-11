@@ -4,6 +4,11 @@ package org.sonatype.sitemap.record;
 public abstract class AbstractKey
     implements Key
 {
+    public String stringValue()
+    {
+        return toString();
+    }
+
     public abstract int hashCode();
 
     public boolean equals( Object obj )
