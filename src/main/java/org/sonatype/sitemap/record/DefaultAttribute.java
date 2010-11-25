@@ -5,11 +5,11 @@ public class DefaultAttribute
 {
     private static final long serialVersionUID = -2305182677595725567L;
 
-    private final Uri uri;
+    private final UriKey uri;
 
     private final String value;
 
-    public DefaultAttribute( Uri uri, String value )
+    public DefaultAttribute( UriKey uri, String value )
     {
         this.uri = uri;
 
@@ -21,7 +21,7 @@ public class DefaultAttribute
         return getUri();
     }
 
-    public Uri getUri()
+    public UriKey getUri()
     {
         return uri;
     }

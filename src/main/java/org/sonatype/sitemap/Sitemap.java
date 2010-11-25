@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.sonatype.sitemap.io.Content;
 import org.sonatype.sitemap.record.Keyed;
-import org.sonatype.sitemap.record.Path;
+import org.sonatype.sitemap.record.PathKey;
 import org.sonatype.sitemap.record.Record;
 
 /**
@@ -16,17 +16,17 @@ import org.sonatype.sitemap.record.Record;
 public interface Sitemap
     extends Keyed
 {
-    boolean contains( Path key );
+    boolean contains( PathKey key );
 
-    Record get( Path key );
+    Record get( PathKey key );
 
-    boolean put( Path key, Content content );
+    boolean put( PathKey key, Content content );
 
-    int putAll( Map<Path, Content> contents );
+    int putAll( Map<PathKey, Content> contents );
 
-    boolean remove( Path key );
+    boolean remove( PathKey key );
 
-    int removeAll( Collection<Path> keys );
+    int removeAll( Collection<PathKey> keys );
 
     int getSize();
 

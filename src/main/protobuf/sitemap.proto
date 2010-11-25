@@ -1,0 +1,47 @@
+// Sitemap Record
+
+package sitemap;
+
+option java_package = "org.sonatype.sitemap.protos";
+option java_outer_classname = "SitemapProtos";
+
+// CoreRecord
+message CoreRecord {
+
+  enum ContentHashType { 
+    SHA1 = 1;
+  };
+  
+  required string key = 1; // key of this content
+  required int64 lastModified = 2; // UTC timestamp when this content was last modified
+  optional int64 contentLength = 3; // item length in bytes
+  optional ContentHashType contentHashType = 4; // hash type of this item
+  optional string contentHashValue = 5; // hash value of this item
+  optional string contentMimeType = 6; // mime type of content
+}
+
+
+// AttributeRecord
+message AttributeRecord {
+
+  message Statement {
+    required string predicate = 1;
+    optional string value = 2;
+  }
+
+  required string key = 1; // key of this content
+
+  repeated Statement statement = 5; // statements
+}
+
+
+// Commands
+
+// create sequence
+// increment sequence
+// createMap
+// removeMap
+// putIntoMap
+// removeFromMap
+// putAllIntoMap
+// removeAllFromMap

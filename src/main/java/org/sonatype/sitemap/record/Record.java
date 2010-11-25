@@ -18,7 +18,7 @@ public interface Record
 
     String getContentMimeType();
 
-    Attribute getAttribute( Uri uri );
+    Attribute getAttribute( UriKey uri );
 
     Collection<Attribute> getAttributes( Contributor c );
 

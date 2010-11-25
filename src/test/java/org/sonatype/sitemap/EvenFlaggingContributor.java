@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.sonatype.sitemap.Contributor;
 import org.sonatype.sitemap.io.Content;
 import org.sonatype.sitemap.record.Attribute;
 import org.sonatype.sitemap.record.DefaultAttribute;
-import org.sonatype.sitemap.record.Path;
+import org.sonatype.sitemap.record.PathKey;
 import org.sonatype.sitemap.record.Record;
 import org.sonatype.sitemap.record.StringKey;
-import org.sonatype.sitemap.record.Uri;
+import org.sonatype.sitemap.record.UriKey;
 
 /**
  * A simple contributor "flagging" every incoming record as "even" or "non-even" (odd), depending on which incoming call
@@ -33,13 +32,13 @@ public class EvenFlaggingContributor
         return namespace;
     }
 
-    public Collection<Attribute> createAttributesFor( Path key, Content content, Record cr )
+    public Collection<Attribute> createAttributesFor( PathKey key, Content content, Record cr )
     {
         int now = ai.getAndIncrement();
 
         ArrayList<Attribute> result = new ArrayList<Attribute>();
 
-        result.add( new DefaultAttribute( new Uri( getKey(), dummyAttribute ), String.valueOf( now % 2 == 0 ) ) );
+        result.add( new DefaultAttribute( new UriKey( getKey(), dummyAttribute ), String.valueOf( now % 2 == 0 ) ) );
 
         return result;
     }

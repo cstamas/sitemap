@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.sonatype.sitemap.Backend;
 import org.sonatype.sitemap.Contributor;
+import org.sonatype.sitemap.ContributorKeyProvider;
 import org.sonatype.sitemap.Sitemap;
 import org.sonatype.sitemap.io.Content;
 import org.sonatype.sitemap.io.DigesterUtils;
@@ -15,25 +16,29 @@ import org.sonatype.sitemap.io.MimeTyped;
 import org.sonatype.sitemap.io.MimeUtils;
 import org.sonatype.sitemap.io.Sha1Hashed;
 import org.sonatype.sitemap.record.Attribute;
-import org.sonatype.sitemap.record.CombinationalKey;
 import org.sonatype.sitemap.record.DefaultRecord;
 import org.sonatype.sitemap.record.Key;
-import org.sonatype.sitemap.record.Path;
+import org.sonatype.sitemap.record.PathKey;
 import org.sonatype.sitemap.record.Record;
-import org.sonatype.sitemap.record.Uri;
+import org.sonatype.sitemap.record.UriKey;
 
 public class DefaultSitemap
     implements Sitemap
 {
     private final Backend backend;
 
+    private final ContributorKeyProvider contributorKeyProvider;
+
     private final Map<Key, Contributor> contributors;
 
     private final Key key;
 
-    public DefaultSitemap( final Backend backend, final Map<Key, Contributor> contributors, final Key key )
+    public DefaultSitemap( final Backend backend, final ContributorKeyProvider contributorKeyProvider,
+                           final Map<Key, Contributor> contributors, final Key key )
     {
         this.backend = backend;
+
+        this.contributorKeyProvider = contributorKeyProvider;
 
         this.contributors = contributors;
 
@@ -50,12 +55,12 @@ public class DefaultSitemap
         return key;
     }
 
-    public boolean contains( Path path )
+    public boolean contains( PathKey PathKey )
     {
-        return backend.getMap( getKey() ).containsKey( path );
+        return backend.getMap( getKey() ).containsKey( PathKey );
     }
 
-    public Record get( Path key )
+    public Record get( PathKey key )
     {
         Record cr = (Record) backend.getMap( getKey() ).get( key );
 
@@ -68,15 +73,15 @@ public class DefaultSitemap
         return cr;
     }
 
-    public boolean put( final Path path, final Content content )
+    public boolean put( final PathKey PathKey, final Content content )
     {
-        Record rc = createCoreRecord( path, content );
+        Record rc = createCoreRecord( PathKey, content );
 
         for ( Contributor c : contributors.values() )
         {
             Collection<Attribute> as = rc.getAttributes( c );
 
-            Map<Uri, Attribute> map = new HashMap<Uri, Attribute>();
+            Map<UriKey, Attribute> map = new HashMap<UriKey, Attribute>();
 
             for ( Attribute a : as )
             {
@@ -89,11 +94,11 @@ public class DefaultSitemap
         return backend.put( getKey(), rc.getKey(), rc );
     }
 
-    public int putAll( Map<Path, Content> contents )
+    public int putAll( Map<PathKey, Content> contents )
     {
         int result = 0;
 
-        for ( Map.Entry<Path, Content> e : contents.entrySet() )
+        for ( Map.Entry<PathKey, Content> e : contents.entrySet() )
         {
             if ( put( e.getKey(), e.getValue() ) )
             {
@@ -104,12 +109,12 @@ public class DefaultSitemap
         return result;
     }
 
-    public boolean remove( Path key )
+    public boolean remove( PathKey key )
     {
         return backend.remove( getKey(), key );
     }
 
-    public int removeAll( Collection<Path> keys )
+    public int removeAll( Collection<PathKey> keys )
     {
         return backend.removeAll( getKey(), keys );
     }
@@ -129,10 +134,10 @@ public class DefaultSitemap
 
     protected Key getPartitionKey( Contributor c )
     {
-        return new CombinationalKey( getKey(), c.getKey() );
+        return contributorKeyProvider.getContributorKey( getKey(), c );
     }
 
-    protected Record createCoreRecord( final Path path, final Content content )
+    protected Record createCoreRecord( final PathKey PathKey, final Content content )
     {
         try
         {
@@ -162,15 +167,15 @@ public class DefaultSitemap
 
             String contentMimeType =
                 ( content instanceof MimeTyped ) ? ( (MimeTyped) content ).getMimeType()
-                    : MimeUtils.getMimeType( path.getPath() );
+                    : MimeUtils.getMimeType( PathKey.getPath() );
 
             DefaultRecord cr =
-                new DefaultRecord( path, content.getLastModified(), content.getLength(), contentSha1Hash,
+                new DefaultRecord( PathKey, content.getLastModified(), content.getLength(), contentSha1Hash,
                     contentMimeType, subRecords );
 
             for ( Contributor c : contributors.values() )
             {
-                Collection<Attribute> sr = c.createAttributesFor( path, cachedContent, cr );
+                Collection<Attribute> sr = c.createAttributesFor( PathKey, cachedContent, cr );
 
                 if ( sr != null )
                 {
