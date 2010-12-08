@@ -1,16 +1,21 @@
 package org.sonatype.sitemap.record;
 
+import java.io.Serializable;
+
 @SuppressWarnings( "serial" )
 public abstract class AbstractKey
-    implements Key
+    implements Key, Serializable
 {
-    public String stringValue()
+    @Override
+    public abstract String stringValue();
+
+    @Override
+    public int hashCode()
     {
-        return toString();
+        return stringValue().hashCode();
     }
 
-    public abstract int hashCode();
-
+    @Override
     public boolean equals( Object obj )
     {
         if ( obj == null )
@@ -31,5 +36,11 @@ public abstract class AbstractKey
         {
             return false;
         }
+    }
+
+    @Override
+    public String toString()
+    {
+        return stringValue() + " (" + getClass().getName() + ")";
     }
 }

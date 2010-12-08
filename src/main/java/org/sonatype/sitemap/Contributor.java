@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import org.sonatype.sitemap.io.Content;
 import org.sonatype.sitemap.record.Attribute;
+import org.sonatype.sitemap.record.Key;
 import org.sonatype.sitemap.record.Keyed;
-import org.sonatype.sitemap.record.PathKey;
 import org.sonatype.sitemap.record.Record;
 
 /**
@@ -17,5 +17,5 @@ import org.sonatype.sitemap.record.Record;
 public interface Contributor
     extends Keyed
 {
-    Collection<Attribute> createAttributesFor( PathKey key, Content content, Record cr );
+    Collection<Attribute> createAttributesFor( Key key, Content content, Record cr );
 }

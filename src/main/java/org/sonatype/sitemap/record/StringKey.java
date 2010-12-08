@@ -20,13 +20,7 @@ public class StringKey
     }
 
     @Override
-    public int hashCode()
-    {
-        return getValue().hashCode();
-    }
-
-    @Override
-    public String toString()
+    public String stringValue()
     {
         return getValue();
     }

@@ -22,11 +22,11 @@ public class DefaultRecord
 
     private transient final Map<Contributor, Collection<Attribute>> attributes;
 
-    public DefaultRecord( final PathKey PathKey, final long lastModified, final long contentLength,
+    public DefaultRecord( final Key key, final long lastModified, final long contentLength,
                           final String contentSha1Hash, final String contentMimeType,
                           final Map<Contributor, Collection<Attribute>> attributes )
     {
-        super( PathKey );
+        super( key );
 
         this.lastModified = lastModified;
 
@@ -39,14 +39,18 @@ public class DefaultRecord
         this.attributes = attributes;
     }
 
-    public PathKey getKey()
-    {
-        return (PathKey) super.getKey();
-    }
-
     public String getPath()
     {
-        return getKey().getPath();
+        Key key = getKey();
+
+        if ( key instanceof UriKey )
+        {
+            return ( (UriKey) key ).getLocalName();
+        }
+        else
+        {
+            return key.stringValue();
+        }
     }
 
     public long getLastModified()

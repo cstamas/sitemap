@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.sonatype.sitemap.io.Content;
 import org.sonatype.sitemap.record.Attribute;
 import org.sonatype.sitemap.record.DefaultAttribute;
-import org.sonatype.sitemap.record.PathKey;
+import org.sonatype.sitemap.record.Key;
 import org.sonatype.sitemap.record.Record;
 import org.sonatype.sitemap.record.StringKey;
 import org.sonatype.sitemap.record.UriKey;
@@ -32,7 +32,7 @@ public class EvenFlaggingContributor
         return namespace;
     }
 
-    public Collection<Attribute> createAttributesFor( PathKey key, Content content, Record cr )
+    public Collection<Attribute> createAttributesFor( Key key, Content content, Record cr )
     {
         int now = ai.getAndIncrement();
 

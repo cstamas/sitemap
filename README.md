@@ -22,5 +22,15 @@ The main record map is in memory, but these main records might be "decorated" by
 Contributors contribution are also held in a map-alike structure, but they are lazily loaded
 on-demand.
 
+Data-flow
+---------
+
+Repository scan gathers all the data from files into dump file (transportable file) -- is protobuf.
+It is already incremental if needed.
+The index consumer indexes that.
+
+R -> MD -> Idx
+
+
 Have fun,  
 ~t~

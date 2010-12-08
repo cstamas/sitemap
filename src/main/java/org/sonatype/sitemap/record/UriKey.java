@@ -22,6 +22,12 @@ public class UriKey
         return ( (StringKey) getKeyB() ).getValue();
     }
 
+    @Override
+    public String stringValue()
+    {
+        return getNamespace() + getLocalName();
+    }
+
     // ==
 
     // example: "urn:maven/artifact#artifactId"
@@ -56,13 +62,5 @@ public class UriKey
         {
             return ide + 1;
         }
-    }
-
-    // ==
-
-    @Override
-    public String toString()
-    {
-        return getNamespace() + getLocalName();
     }
 }

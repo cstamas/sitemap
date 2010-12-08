@@ -18,7 +18,6 @@ import org.sonatype.sitemap.io.Sha1Hashed;
 import org.sonatype.sitemap.record.Attribute;
 import org.sonatype.sitemap.record.DefaultRecord;
 import org.sonatype.sitemap.record.Key;
-import org.sonatype.sitemap.record.PathKey;
 import org.sonatype.sitemap.record.Record;
 import org.sonatype.sitemap.record.UriKey;
 
@@ -55,12 +54,12 @@ public class DefaultSitemap
         return key;
     }
 
-    public boolean contains( PathKey PathKey )
+    public boolean contains( Key Key )
     {
-        return backend.getMap( getKey() ).containsKey( PathKey );
+        return backend.getMap( getKey() ).containsKey( Key );
     }
 
-    public Record get( PathKey key )
+    public Record get( Key key )
     {
         Record cr = (Record) backend.getMap( getKey() ).get( key );
 
@@ -73,9 +72,9 @@ public class DefaultSitemap
         return cr;
     }
 
-    public boolean put( final PathKey PathKey, final Content content )
+    public boolean put( final Key Key, final Content content )
     {
-        Record rc = createCoreRecord( PathKey, content );
+        Record rc = createCoreRecord( Key, content );
 
         for ( Contributor c : contributors.values() )
         {
@@ -94,11 +93,11 @@ public class DefaultSitemap
         return backend.put( getKey(), rc.getKey(), rc );
     }
 
-    public int putAll( Map<PathKey, Content> contents )
+    public int putAll( Map<Key, Content> contents )
     {
         int result = 0;
 
-        for ( Map.Entry<PathKey, Content> e : contents.entrySet() )
+        for ( Map.Entry<Key, Content> e : contents.entrySet() )
         {
             if ( put( e.getKey(), e.getValue() ) )
             {
@@ -109,12 +108,12 @@ public class DefaultSitemap
         return result;
     }
 
-    public boolean remove( PathKey key )
+    public boolean remove( Key key )
     {
         return backend.remove( getKey(), key );
     }
 
-    public int removeAll( Collection<PathKey> keys )
+    public int removeAll( Collection<Key> keys )
     {
         return backend.removeAll( getKey(), keys );
     }
@@ -137,7 +136,7 @@ public class DefaultSitemap
         return contributorKeyProvider.getContributorKey( getKey(), c );
     }
 
-    protected Record createCoreRecord( final PathKey PathKey, final Content content )
+    protected Record createCoreRecord( final Key key, final Content content )
     {
         try
         {
@@ -167,15 +166,15 @@ public class DefaultSitemap
 
             String contentMimeType =
                 ( content instanceof MimeTyped ) ? ( (MimeTyped) content ).getMimeType()
-                    : MimeUtils.getMimeType( PathKey.getPath() );
+                    : MimeUtils.getMimeType( key.stringValue() );
 
             DefaultRecord cr =
-                new DefaultRecord( PathKey, content.getLastModified(), content.getLength(), contentSha1Hash,
+                new DefaultRecord( key, content.getLastModified(), content.getLength(), contentSha1Hash,
                     contentMimeType, subRecords );
 
             for ( Contributor c : contributors.values() )
             {
-                Collection<Attribute> sr = c.createAttributesFor( PathKey, cachedContent, cr );
+                Collection<Attribute> sr = c.createAttributesFor( key, cachedContent, cr );
 
                 if ( sr != null )
                 {

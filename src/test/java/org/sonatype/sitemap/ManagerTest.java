@@ -7,7 +7,6 @@ import junit.framework.TestCase;
 import org.sonatype.sitemap.core.DefaultManager;
 import org.sonatype.sitemap.io.FileContent;
 import org.sonatype.sitemap.record.Key;
-import org.sonatype.sitemap.record.PathKey;
 import org.sonatype.sitemap.record.Record;
 import org.sonatype.sitemap.record.StringKey;
 import org.sonatype.sitemap.space4j.Space4jBackend;
@@ -61,18 +60,18 @@ public class ManagerTest
 
         Sitemap map = manager.getSitemap( alpha );
 
-        map.put( new PathKey( "/some/path" ), new FileContent( new File( "pom.xml" ) ) );
+        map.put( new StringKey( "/some/path" ), new FileContent( new File( "pom.xml" ) ) );
 
-        map.put( new PathKey( "/some/other/path" ), new FileContent( new File( "pom.xml" ) ) );
+        map.put( new StringKey( "/some/other/path" ), new FileContent( new File( "pom.xml" ) ) );
 
         for ( int i = 0; i < 100; i++ )
         {
-            PathKey path = new PathKey( "/some/path/" + i );
+            StringKey path = new StringKey( "/some/path/" + i );
             map.put( path, new FileContent( new File( "pom.xml" ) ) );
         }
 
-        dumpRecord( map.get( new PathKey( "/some/path" ) ) );
-        dumpRecord( map.get( new PathKey( "/some/other/path" ) ) );
+        dumpRecord( map.get( new StringKey( "/some/path" ) ) );
+        dumpRecord( map.get( new StringKey( "/some/other/path" ) ) );
     }
 
 }

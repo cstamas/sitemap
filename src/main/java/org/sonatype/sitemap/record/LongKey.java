@@ -18,13 +18,7 @@ public class LongKey
     }
 
     @Override
-    public int hashCode()
-    {
-        return Long.valueOf( getValue() ).hashCode();
-    }
-    
-    @Override
-    public String toString()
+    public String stringValue()
     {
         return Long.toString( getValue() );
     }

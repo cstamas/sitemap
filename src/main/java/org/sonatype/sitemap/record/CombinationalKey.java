@@ -11,6 +11,9 @@ public class CombinationalKey
 
     public CombinationalKey( final Key keyA, final Key keyB )
     {
+        assert keyA != null : "KeyA cannot be null!";
+        assert keyB != null : "KeyB cannot be null!";
+
         this.keyA = keyA;
 
         this.keyB = keyB;
@@ -27,18 +30,8 @@ public class CombinationalKey
     }
 
     @Override
-    public int hashCode()
+    public String stringValue()
     {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ( ( keyA == null ) ? 0 : keyA.hashCode() );
-        result = prime * result + ( ( keyB == null ) ? 0 : keyB.hashCode() );
-        return result;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "(a=" + getKeyA().toString() + ";b=" + getKeyB().toString() + ")";
+        return getKeyA().toString() + ";" + getKeyB().toString();
     }
 }
